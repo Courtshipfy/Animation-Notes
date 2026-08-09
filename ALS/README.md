@@ -1,6 +1,6 @@
 # Advanced Locomotion System
 
-记录 Advance Locomotion System（ALS）相关的学习笔记、实现细节、配置说明和问题排查过程。
+记录 Advanced Locomotion System（ALS）相关的动画技术、实现细节、配置说明和问题排查过程。角色移动、网络和玩法系统只在影响动画表现时简要记录。
 
 ## 笔记
 

@@ -4,11 +4,13 @@
 
 ## 内容目录
 
-- [`ALS/`](./ALS/)：Advanced Locomotion System，记录高级角色移动、状态机、动画蓝图和相关实现细节。
+- [`ALS/`](./ALS/)：Advanced Locomotion System，重点记录动画蓝图、状态机、移动姿势、分层混合和 IK 等动画技术。
 - [`KAI/`](./KAI/)：Kai Locomotion System，记录 Kai Locomotion System 的结构、功能和使用经验。
 - [`MotionMatching/`](./MotionMatching/)：Motion Matching，记录动作匹配、姿态搜索、数据库构建和调试方法。
 
 ## 笔记约定
+
+本仓库以动画技术为核心。角色、移动、网络和玩法内容只记录与动画表现直接相关的部分。
 
 每篇笔记以 How + Why 为主线：
 
