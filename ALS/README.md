@@ -12,7 +12,16 @@
 
 ## 动画系统
 
-- [Grounded](./04-Grounded.md)：地面移动、Idle、Cycle、Start、Stop 和 Pivot。
+- [Grounded](./04-Grounded.md)：地面移动系统的总览和专题入口。
+  - [04.1 Grounded 状态与进入条件](./04.1-Grounded状态与进入条件.md)
+  - [04.2 局部速度与 Velocity Blend](./04.2-局部速度与VelocityBlend.md)
+  - [04.3 移动方向与 Rotation Yaw Offset](./04.3-移动方向与RotationYawOffset.md)
+  - [04.4 Grounded Lean](./04.4-GroundedLean.md)
+  - [04.5 Standing 移动](./04.5-Standing移动.md)
+  - [04.6 Crouching 移动](./04.6-Crouching移动.md)
+  - [04.7 步态混合与播放速率](./04.7-步态混合与播放速率.md)
+  - [04.8 Grounded 动画图结构](./04.8-Grounded动画图结构.md)
+  - [04.9 Grounded 调试](./04.9-Grounded调试.md)
 - [In Air](./05-In-Air.md)：跳跃、下落和落地相关的动画上下文。
 - [起步、停止与转身](./06-起步停止与转身.md)：移动阶段和原地转身的选择逻辑。
 - [瞄准与 Overlay](./07-瞄准与Overlay.md)：Aim Offset、上半身分层和覆盖姿势。
