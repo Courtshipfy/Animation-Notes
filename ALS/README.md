@@ -32,4 +32,7 @@
 
 - [动画资产组织](./09-动画资产组织.md)：Sequence、Blend Space、Curve、Layer 和 Slot 的职责。
 - [调试问题](./10-调试问题.md)：按“数据 → 状态 → 姿势 → 修正”的顺序定位问题。
-- [UE5 现代角色动画节点](./11-UE5现代角色动画节点.md)：Foot Placement、Animation Warping、Motion Matching、全身 IK 和现代姿势过渡工具的职责与组合方式。
+
+## 与 UE5 现代节点的衔接
+
+- [UE5 现代动画节点](../UE5现代动画节点/README.md)：ALS 可按需要引入接触 IK、Pose Warping、距离匹配和惯性式过渡；这些能力不属于 ALS 本身。
