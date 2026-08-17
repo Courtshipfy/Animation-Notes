@@ -1,58 +1,38 @@
-# Pose Warping：方向、步幅与坡度
+# Pose Warping：Orientation、Stride、Slope、Steering
 
-> Pose Warping 保留当前动画的基本节奏，再在运行时改变局部骨骼的空间关系，让它更接近实际移动条件。
+> Pose Warping 不选择动画，也不移动 Actor；它重排当前 Pose 的局部骨骼关系，使同一段动作更贴近实际方向、速度与坡面。
 
-## 三类 Warping 分别修正什么
+## Orientation Warping：修正动画前向与移动方向的残差
 
-| 节点 | 输入的差异 | 主要修改 | 适用场景 |
-| --- | --- | --- | --- |
-| Orientation Warping | 实际移动方向与动画前向的夹角 | 腿部 IK 骨骼的朝向，并把部分扭转分配到脊柱 | 用较少方向动画覆盖斜向移动 |
-| Stride Warping | 实际移动速度与动画标定速度的比例 | 双脚的跨步距离 | 同一套走跑动作适配一段速度范围 |
-| Slope Warping | 当前坡面与角色移动方向 | 下半身相对坡面的整体姿势 | 上下坡时保留合理的步态与腿部弯曲 |
+Orientation Warping 是方向姿势修正节点。动画向前跑、角色却相对身体斜向移动时，它让下半身步态朝实际移动方向偏转，同时尽量维持上身面向。
 
-它们都在 Pose 的局部骨骼空间中工作，不会替角色移动组件转动 Actor，也不能替代正确的 Root Motion 或碰撞移动。
+它的原理是输入局部移动方向的有符号角度，旋转左右 IK Foot 的运动关系，并把部分反向扭转分配给 Spine。IK Foot Root 是下半身参考空间；Spine 列表决定躯干承担多少补偿；随后 Leg IK 才将修改后的 IK Foot 目标解算回实际腿链。它修的是当前 Pose 的方向残差，不会驱动 Actor 转向。
 
-## Orientation Warping：让移动方向不只由动画资产决定
+典型应用是用一段向前循环覆盖中等角度的斜向跑、瞄准移动，或修正 Motion Matching 选中的姿势。ALS 的方向 Blend Space 已经靠资产承担方向时，应明确谁是主方案；同一动作被两者重复偏转会导致髋部和脊柱过扭。大角度后退、横移仍应使用对应资产。
 
-动画可以是向前跑，而角色速度相对身体前向偏右。Orientation Warping 将这个夹角用于重新定向腿部运动，并把一部分扭转交给脊柱，从而避免下半身完全朝前、速度却明显向侧方的割裂感。
+## Stride Warping：修正一步跨多远
 
-它减少的是中间方向动画的需求，不是无限扩大单一动画的覆盖范围。角度过大时，髋部、膝盖和上半身扭转仍会失真；后退、横移或持枪等具有强语义的动作，仍应保留对应资产或状态。
+Stride Warping 是步幅姿势修正节点。它调整双脚的空间间距，使动画标定速度与角色实际移动速度不同的时候，脚仍能覆盖合理地面距离。
 
-对于 ALS，`MovementDirection`、Rotation Yaw Offset 和方向 Blend Space 是资产选择与曲线驱动的方案；Orientation Warping 是选择之后的姿势修正。两者可共存，但必须决定谁是主方案，避免方向动画已充分偏转后又被节点重复扭转。
+它的原理是根据实际 Locomotion Speed 与动画的参考 / Root Motion Speed 得到步幅比例，近似为 `Stride Scale ≈ Locomotion Speed / Root Motion Speed`。大于 1 拉开跨步，小于 1 收窄跨步；它改变空间长度，不改变动画时间。Play Rate 改的是节奏，因此两者可有限配合、却不应同时无边界补偿同一个速度误差。
 
-## Stride Warping：修正空间步幅，不等于改播放速度
+典型应用是一套走跑循环覆盖有限速度区间，减少单靠提高播放速率造成的碎步。ALS 的 `StrideBlendAmount` 与它属于同一层解决方案：基线速度下比例应接近 1；若此时异常，应先检查动画参考速度、根骨数据或速度单位。极端速度仍须切换合适动画。
 
-Stride Warping 用角色移动速度与动画根运动的标定速度估算步幅比例，可概括为：
+## Slope Warping：让整段步态适应坡面
 
-```text
-Stride Scale ≈ Locomotion Speed / Root Motion Speed
-```
+Slope Warping 是坡面姿势修正节点。它让下半身移动姿势随地面法线和移动方向变化，而不是只把最终脚掌旋转到地面上。
 
-角色更快时扩大双脚间的距离，更慢时缩小距离。它主要解决“空间上跨得太大或太小”；播放速率主要解决“时间节奏太快或太慢”。两者可以在有限范围内配合，但不应同时无边界地补偿速度。
+它的原理是重排骨盆、腿和 IK Foot 的相对位置，使上坡时保留抬腿量、下坡时维持重心和腿部压缩；需要时下拉骨盆以容纳脚部高度差。它处理一整个运动周期怎样适应坡度，单脚接触系统只处理这只脚这一帧该踩哪里。
 
-使用前要确认动画的 Root Motion Speed 或参考速度有效。原地（in-place）动画、错误的根骨速度、以及没有重新标定的 ALS `StrideBlendAmount`，都会使比例失真，表现为碎步、滑步或腿部过度伸展。
+典型链路是平地循环在缓坡、楼梯和不规则地面上的第一层适配：`Slope Warping → Foot Placement`，先改整体步态，再确定每脚落点与支撑。先锁脚再改下半身会重新破坏落脚结果；它也不能取代地面检测。
 
-## Slope Warping：先适配整段步态，再处理落脚点
+## Steering：逐步引导根运动轨迹
 
-Slope Warping 使用坡度与移动方向调整下半身的整体运动姿势。它解决的是“平地循环跑步直接放到斜坡上”时的髋部高度、抬腿量与重心方向不自然，而不只是把脚掌旋转到地面法线。
+Steering 是现代 Motion Matching 链路中的根运动引导能力，让已选动画在播放过程中逐步向目标轨迹靠拢。
 
-在不规则地面上，一个常见分工是：Slope Warping 先塑造整体上下坡姿势，Foot Placement 再根据每只脚的实际接触点做末端放置与骨盆补偿。只用脚部 IK 虽然能碰到地面，却常留下身体仍在平地跑、膝盖压缩不合理的问题。
+它的原理是比较当前动画根运动趋势与目标轨迹，在剩余播放时间内逐步施加方向引导；它主要处理动画运动轨迹，不同于 Orientation Warping 对腿与脊柱局部 Pose 的修正。原始根运动与目标差异过大时，仍需要重选动画或切换状态。
 
-## 与 Steering 的边界
-
-Steering 在现代 Motion Matching 链路中用于在播放期间逐步引导根运动方向，使已选动画更接近目标轨迹。它改变的是动画运动轨迹的引导，不能简单视为 Orientation Warping 的同义词；后者主要修正当前姿势的方向关系。不同 UE5 版本的接口与示例组织变化较快，使用时以目标版本的 Game Animation Sample 为准。
-
-## 调试顺序
-
-1. 只保留基础动画，确认速度、根骨朝向和 IK Foot Bone 没有问题。
-2. 单独启用 Orientation、Stride、Slope 中的一种，观察其输入值与关节极限。
-3. 再加入 Foot Placement 或 Leg IK，确认最终接触没有被 Warping 二次破坏。
-
-## 相关主题
-
-- [接触与 IK](./01-接触与IK.md)
-- [ALS 步态混合与播放速率](../ALS/04.7-步态混合与播放速率.md)
-- [ALS 移动方向与 Rotation Yaw Offset](../ALS/04.3-移动方向与RotationYawOffset.md)
+典型应用是 Game Animation Sample 在 Motion Matching 的 Blend Stack Graph 中用它让连续移动跟随输入意图。角色必须在交互点精确结束时，应使用 [Motion Warping](./03-根运动与根骨修正.md)，而不是 Steering。
 
 ## 参考资料
 

@@ -1,49 +1,22 @@
-# Distance Matching：按距离推进动画
+# Distance Matching：按距离而不是时间推进动画
 
-> Distance Matching 把“动画现在应播放到哪一帧”从固定时间问题改成距离查询问题。
+> 它将“动画现在应播放到哪一帧”变成反查问题：给定距离，在曲线上找对应姿势。
 
-## 解决的问题
+## Distance Matching：距离驱动的时间重参数化
 
-停止、Pivot、起步和落地的进入速度不完全相同。若固定按时间播放一段动画，角色可能已经停下而动画还在迈步，或还没到落地点就提前进入落地姿势。仅调播放速率也会改变动作节奏。
+Distance Matching 是 Animation Locomotion Library 的一套工作流，不是普通输入 Pose → 输出 Pose 节点。它依赖 Animation Sequence 的 Distance Curve、Sequence Evaluator 和 Anim Node Function，让动画由距离变量而非 Delta Time 推进。
 
-Distance Matching 让动画资产携带 Distance Curve；运行时根据剩余距离、已移动距离或到地面距离在曲线上反查动画时间。通常由 Animation Locomotion Library 的节点函数更新 Sequence Evaluator 的显式时间。
+它的原理是 Distance Curve 记录 `动画时间 t → 约定距离 d`。运行时由移动模型得到目标距离 `D`，在曲线上反查 `d(t) ≈ D` 的时间 `t`，并写入 Sequence Evaluator 的 Explicit Time。动画仍播放原有关键帧，只是播放进度被距离重参数化。曲线需以可运行时索引的压缩方式保存，官方流程使用 Uniform Indexable Animation Compression。
 
-```text
-移动模型给出距离 D
-       │
-Distance Curve：时间 t → 距离 d
-       │ 反查 d ≈ D
-Sequence Evaluator 播放到时间 t
-```
+典型应用是停止时以剩余制动距离选择停步相位，Pivot 时以到转向点的距离控制蹬地，落地时以到地面的高度挑选缓冲姿势，起步时以已前进距离同步动作。链路是 `距离预测 / Trace → 节点函数反查 Distance Curve → Sequence Evaluator`。它不预测距离，也不选择动画；这些仍属于移动模型和状态选择。
 
-## 三个必须对齐的部分
+## Distance Curve：把空间事件固定到正确姿势
 
-1. **动画曲线**：曲线必须随动画的实际根位移或所定义的测距方向变化，且压缩设置允许运行时读取。
-2. **距离来源**：停止一般使用预测制动距离，Pivot 使用到转向点的距离，落地使用到地面的距离；不要混用单位、轴向或正负方向。
-3. **显式时间控制**：Sequence Evaluator 不再单纯随 Delta Time 累加，而由曲线查询结果驱动；没有正确写入显式时间，曲线再正确也不会生效。
+Distance Curve 是动画“每个姿势对应多少位移”的查找表；它与只调整时间倍率的 Play Rate 不同。
 
-## 常用场景与边界
+它的原理是 Play Rate 会让所有帧一起加速或减速，不能保证关键脚相位恰在剩余距离为零时发生；Distance Matching 直接选择对应距离的帧，让空间事件同游戏距离一致。曲线方向、零点和单位必须与输入变量一致：曲线若从最大剩余距离下降到 `0`，运行时就必须输入同定义的剩余距离。
 
-| 场景 | 查询的距离 | 目的 |
-| --- | --- | --- |
-| 停止 | 剩余制动距离 | 让停步阶段对应真正的减速位置 |
-| Pivot | 到转向点或已越过的距离 | 让蹬地、转向和反向移动衔接 |
-| 落地 | 到地面的高度 | 在接触前进入合适的准备或缓冲姿势 |
-| 起步 | 已推进的距离 | 让启动阶段与实际位移同步 |
-
-它不负责预测距离，也不选择动画。Character Movement、轨迹预测或玩法代码负责给出可信的距离；状态机、Chooser 或 Motion Matching 负责决定当前使用的动作。距离模型与动画根位移不一致时，Distance Matching 只会把这种不一致稳定地放大。
-
-## 常见问题
-
-- 曲线没有启用可运行时索引的压缩设置，节点函数无法正确读取数值。
-- 输入距离在停止前后跨过零点，曲线方向却按另一种符号定义，导致动画倒跳或卡在端点。
-- 同时用大幅 Play Rate 修正和 Distance Matching 推进同一段动画，节奏容易失去可控性。
-- 距离超出曲线有效范围时没有定义端点策略，造成姿势冻结或突然跳转。
-
-## 相关主题
-
-- [根运动与根骨修正](./03-根运动与根骨修正.md)
-- [ALS 起步、停止与转身](../ALS/06-起步停止与转身.md)
+典型用法是先用固定距离检查反查时间和输出姿势，再接入制动预测或落地 Trace。调试时记录 `D`、反查时间 `t`、曲线值 `d(t)`：三者不一致通常是曲线定义或单位错误；三者正确而动画不动，通常是 Explicit Time 没有写入 Evaluator。
 
 ## 参考资料
 
