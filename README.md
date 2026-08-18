@@ -6,6 +6,7 @@
 
 - [`Fundamentals/`](./Fundamentals/)：跨动画系统复用的基础概念，例如姿态叠加、动画分层、Additive、Slot 和 IK 顺序。
 - [`ALS/`](./ALS/)：Advanced Locomotion System，重点记录动画蓝图、状态机、移动姿势、分层混合和 IK 等动画技术。
+- [`Camera/`](./Camera/)：角色运动相机系统（3C 中的 Camera），记录第三人称相机的取景、跟随、防穿墙，以及相机与角色朝向和动画姿势的耦合。
 - [`KAI/`](./KAI/)：Kai Locomotion System，记录 Kai Locomotion System 的结构、功能和使用经验。
 - [`MotionMatching/`](./MotionMatching/)：Motion Matching，记录动作匹配、姿态搜索、数据库构建和调试方法。
 - [`UE5现代动画节点/`](./UE5现代动画节点/)：独立记录 UE5 动画运行时修正与选择工具，例如接触 IK、Pose Warping、距离匹配、根运动修正和动态过渡。

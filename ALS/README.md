@@ -39,3 +39,7 @@
 ## 与 UE5 现代节点的衔接
 
 - [UE5 现代动画节点](../UE5现代动画节点/README.md)：ALS 可按需要引入接触 IK、Pose Warping、距离匹配和惯性式过渡；这些能力不属于 ALS 本身。
+
+## 相关大类
+
+- [角色运动相机系统](../Camera/README.md)：ALS 的第三人称相机、Control Rotation 与 ViewState 的耦合，独立记录在 Camera 大类。
