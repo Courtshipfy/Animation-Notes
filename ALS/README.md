@@ -29,6 +29,7 @@
 - [Foot IK](./08-Foot-IK.md)：脚部 IK、脚锁定和骨盆偏移。
   - [08.1 脚部 IK 锁定](./08.1-脚部IK锁定.md)
   - [08.2 Foot Offset](./08.2-FootOffset.md)
+  - [08.3 腿部 IK 解算](./08.3-腿部IK解算.md)
 
 ## 实践
 

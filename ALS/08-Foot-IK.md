@@ -6,6 +6,7 @@
 
 - [08.1 脚部 IK 锁定](./08.1-脚部IK锁定.md)：动画曲线如何锁住支撑脚，以及角色移动和旋转产生的偏移如何被补偿。
 - [08.2 Foot Offset](./08.2-FootOffset.md)：Foot Offset Trace 与位置/旋转偏移节点如何让脚贴合斜坡、台阶和不规则地面。
+- [08.3 腿部 IK 解算](./08.3-腿部IK解算.md)：Two Bone IK 与 Calculate Pole Vector 如何把脚目标真正解算到腿链上。
 
 ## 工作方式
 
