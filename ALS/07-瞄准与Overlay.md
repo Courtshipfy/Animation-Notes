@@ -354,6 +354,7 @@ Box、Injured 或 HandsTied 只是在相同框架下换了资源、状态分支�
 
 ## 相关主题
 
+- [AB_Als_Layering 的设计思路](./07.1-AB_Als_Layering设计.md)
 - [公共基础：姿态叠加与动画分层](../Fundamentals/01-姿态叠加与动画分层.md)
 - [整体架构](./01-整体架构.md)
 - [动画数据流](./02-动画数据流.md)

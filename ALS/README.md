@@ -25,6 +25,7 @@
 - [In Air](./05-In-Air.md)：跳跃、下落和落地相关的动画上下文。
 - [起步、停止与转身](./06-起步停止与转身.md)：移动阶段和原地转身的选择逻辑。
 - [瞄准与 Overlay](./07-瞄准与Overlay.md)：Aim Offset、上半身分层和覆盖姿势。
+  - [07.1 AB_Als_Layering 的设计思路](./07.1-AB_Als_Layering设计.md)：参考姿势、动态 Additive、身体区域、Hands、Slots 和曲线恢复为什么按当前顺序组织。
 - [Foot IK](./08-Foot-IK.md)：脚部 IK、脚锁定和骨盆偏移。
   - [08.1 脚部 IK 锁定](./08.1-脚部IK锁定.md)
 
