@@ -28,6 +28,7 @@
   - [07.1 AB_Als_Layering 的设计思路](./07.1-AB_Als_Layering设计.md)：参考姿势、动态 Additive、身体区域、Hands、Slots 和曲线恢复为什么按当前顺序组织。
 - [Foot IK](./08-Foot-IK.md)：脚部 IK、脚锁定和骨盆偏移。
   - [08.1 脚部 IK 锁定](./08.1-脚部IK锁定.md)
+  - [08.2 Foot Offset](./08.2-FootOffset.md)
 
 ## 实践
 
