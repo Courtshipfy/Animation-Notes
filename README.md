@@ -4,6 +4,7 @@
 
 ## 内容目录
 
+- [`Fundamentals/`](./Fundamentals/)：跨动画系统复用的基础概念，例如姿态叠加、动画分层、Additive、Slot 和 IK 顺序。
 - [`ALS/`](./ALS/)：Advanced Locomotion System，重点记录动画蓝图、状态机、移动姿势、分层混合和 IK 等动画技术。
 - [`KAI/`](./KAI/)：Kai Locomotion System，记录 Kai Locomotion System 的结构、功能和使用经验。
 - [`MotionMatching/`](./MotionMatching/)：Motion Matching，记录动作匹配、姿态搜索、数据库构建和调试方法。
