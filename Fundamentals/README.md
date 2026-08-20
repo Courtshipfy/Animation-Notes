@@ -6,6 +6,11 @@
 
 - [姿态叠加与动画分层](./01-姿态叠加与动画分层.md)：Override、Additive、骨骼遮罩、Anim Layer、Slot、Aim Offset 和 IK 如何组合成最终姿势。
 
+## 根运动与移动驱动
+
+- [动画资产的根运动规格](./03-动画资产的根运动规格.md)：原地动画与根运动动画的分工，ALS、Motion Matching、Kai 对「谁驱动位移、谁负责对齐」的不同选择。
+- [Locomotion 动作资源规格对比](./04-Locomotion动作资源规格对比.md)：起步几步、循环几拍、几向、脚相与标定速度的差异；离散片段目录（ALS/Kai）与连续动捕数据库（Motion Matching）两条路线。
+
 具体系统如何落地这些概念，应继续阅读对应系统的实现专题。
 
 - [ALS：瞄准与 Overlay](../ALS/07-瞄准与Overlay.md)

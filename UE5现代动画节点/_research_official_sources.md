@@ -56,12 +56,14 @@
 
 ## 对应的专题边界
 
-- `01-接触与IK.md`：Foot Placement、Leg IK、FBIK / Control Rig；按「接触目标 → 腿链 → 全身约束」解释职责。
-- `02-Pose-Warping.md`：Orientation、Stride、Slope Warping；说明三者的输入、作用空间与覆盖范围。
-- `03-根运动与根骨修正.md`：Motion Warping 的 Root Motion、Warp Window、Warp Target；Offset Root Bone 另作内部 Mesh 偏差处理。
-- `04-Distance-Matching.md`：Distance Curve、Sequence Evaluator、节点函数和压缩设置。
-- `05-查询数据与资源选择.md`：Pose History、Trajectory、Chooser、Proxy Table；Motion Matching 的数据库细节仍由 `MotionMatching/` 目录承担。
-- `06-动态姿势过渡.md`：Blend Stack、Inertialization、Dead Blending，只讨论姿势切换而不讨论姿势选择。
+已改为「每个节点一篇」的讲解式文章，按职责分组：
+
+- 接触与 IK：`Foot-Placement.md`、`Leg-IK.md`、`Full-Body-IK.md`（接触目标 → 腿链 → 全身约束）。
+- 姿势 Warping：`Orientation-Warping.md`、`Stride-Warping.md`、`Slope-Warping.md`（各自的输入、作用空间与覆盖范围）。
+- 根运动与轨迹：`Steering.md`、`Motion-Warping.md`、`Offset-Root-Bone.md`（连续跟随意图 vs 精确到达目标 vs Mesh Root 内部偏差）。
+- 时间：`Distance-Matching.md`（Distance Curve、Sequence Evaluator、节点函数和压缩设置）。
+- 查询与选择：`Pose-History.md`、`Trajectory.md`、`Chooser.md`、`Proxy-Table.md`；Motion Matching 的数据库细节仍由 `MotionMatching/` 目录承担。
+- 动态过渡：`Blend-Stack.md`、`Inertialization.md`、`Dead-Blending.md`（只讨论姿势切换而不讨论姿势选择）。
 
 ## 官方资料索引
 
