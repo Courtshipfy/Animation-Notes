@@ -33,6 +33,7 @@
 ## 相关主题
 
 - [03 地面移动的输入与朝向模式](./03_地面移动的输入与朝向模式.md)
+- [17 地面状态：过渡条件与交棒](./17_地面状态_过渡条件与交棒.md)
 - [04 起步：靶向与非靶向的动画选择](./04_起步_靶向与非靶向的动画选择.md)
 - [06 停止：距离匹配与左右脚选择](./06_停止_距离匹配与左右脚选择.md)
 
@@ -41,4 +42,3 @@
 - Pivot 状态初始化、预测距离和 Rotation Matching：`I:/UnrealProjects/GASP/Plugins/Kai_Locomotion/Source/KaiLocomotion/Private/Animation/KLSBaseLinkedAnimInstance.cpp:356-568`
 - 站立/蹲伏 Pivot 资源选择与软 Pivot 回退：`I:/UnrealProjects/GASP/Plugins/Kai_Locomotion/Source/KaiLocomotion/Private/Data/KLSDataAssets.cpp:252-381`
 - Pivot 资格和状态更新：`I:/UnrealProjects/GASP/Plugins/Kai_Locomotion/Source/KaiLocomotion/Private/Library/KLSLocomotionBlueprintLibrary.cpp:159-178`
-
